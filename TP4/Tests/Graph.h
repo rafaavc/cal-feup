@@ -93,9 +93,10 @@ Vertex<T> * Graph<T>::findVertex(const T &in) const {
  */
 template <class T>
 bool Graph<T>::addVertex(const T &in) {
-	// TODO (4 lines)
-	// HINT: use the findVertex function to check if a vertex already exists
-	return false;
+	if (findVertex(in) != NULL) return false;
+	Vertex<T> vertex = Vertex<T>(in);
+	vertexSet.push_back(&vertex);
+    return true;
 }
 
 /****************** 1b) addEdge ********************/
@@ -107,10 +108,11 @@ bool Graph<T>::addVertex(const T &in) {
  */
 template <class T>
 bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
-	// TODO (6 lines)
-	// HINT: use findVertex to obtain the actual vertices
-	// HINT: use the next function to actually add the edge
-	return false;
+	Vertex<T> * sourcVertex = findVertex(sourc);
+	Vertex<T> * destVertex = findVertex(dest);
+	if (sourcVertex == NULL || destVertex == NULL) return false;
+	sourcVertex->addEdge(destVertex, w);
+	return true;
 }
 
 /*
@@ -119,7 +121,7 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
  */
 template <class T>
 void Vertex<T>::addEdge(Vertex<T> *d, double w) {
-	// TODO (1 line)
+    adj.push_back(Edge<T>(d, w));
 }
 
 
