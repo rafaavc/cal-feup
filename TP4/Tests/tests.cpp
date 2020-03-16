@@ -31,7 +31,6 @@ void createNetwork(Graph<Person> & net1)
 }
 
 TEST(CAL_FP04, test_addVertex) {
-    /* //uncomment test body below!
     Graph<Person> net1;
     Person p1("Ana",19);
     Person p2("Carlos",33);
@@ -41,11 +40,9 @@ TEST(CAL_FP04, test_addVertex) {
     net1.addVertex(p3); net1.addVertex(p4);
     EXPECT_EQ(false, net1.addVertex(p2));
     EXPECT_EQ(4, net1.getNumVertex());
-     */
 }
 
 TEST(CAL_FP04, test_removeVertex) {
-    /* //uncomment test body below!
     Graph<Person> net1;
     Person p1("Ana",19);
     Person p2("Carlos",33);
@@ -56,11 +53,9 @@ TEST(CAL_FP04, test_removeVertex) {
     EXPECT_EQ(true, net1.removeVertex(p2));
     EXPECT_EQ(false, net1.removeVertex(p2));
     EXPECT_EQ(3, net1.getNumVertex());
-     */
 }
 
 TEST(CAL_FP04, test_addEdge) {
-    /* //uncomment test body below!
     Graph<Person> net1;
     Person p1("Ana",19);
     Person p2("Carlos",33);
@@ -73,11 +68,9 @@ TEST(CAL_FP04, test_addEdge) {
     EXPECT_EQ(true, net1.addEdge(p1,p3,0));
     EXPECT_EQ(true, net1.addEdge(p1,p4,0));
     EXPECT_EQ(false, net1.addEdge(p2,p5,0));
-     */
 }
 
 TEST(CAL_FP04, test_removeEdge) {
-    /* //uncomment test body below!
     Graph<Person> net1;
     Person p1("Ana",19);
     Person p2("Carlos",33);
@@ -93,7 +86,6 @@ TEST(CAL_FP04, test_removeEdge) {
     EXPECT_EQ(true, net1.removeEdge(p1,p3));
     EXPECT_EQ(false, net1.removeEdge(p1,p5));
     EXPECT_EQ(false, net1.removeEdge(p2,p3));
-     */
 }
 
 TEST(CAL_FP04, test_dfs) {

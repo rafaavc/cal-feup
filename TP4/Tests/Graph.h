@@ -79,9 +79,11 @@ int Graph<T>::getNumVertex() const {
  */
 template <class T>
 Vertex<T> * Graph<T>::findVertex(const T &in) const {
-	for (auto v : vertexSet)
-		if (v->info == in)
-			return v;
+	for (auto v : vertexSet) {
+        if (v->info == in) {
+            return v;
+        }
+    }
 	return NULL;
 }
 
@@ -93,9 +95,9 @@ Vertex<T> * Graph<T>::findVertex(const T &in) const {
  */
 template <class T>
 bool Graph<T>::addVertex(const T &in) {
-	if (findVertex(in) != NULL) return false;
-	Vertex<T> vertex = Vertex<T>(in);
-	vertexSet.push_back(&vertex);
+    if (findVertex(in) != NULL) return false;
+	auto vertex = new Vertex<T>(in);
+	vertexSet.push_back(vertex);
     return true;
 }
 
@@ -134,10 +136,10 @@ void Vertex<T>::addEdge(Vertex<T> *d, double w) {
  */
 template <class T>
 bool Graph<T>::removeEdge(const T &sourc, const T &dest) {
-	// TODO (5 lines)
-	// HINT: Use "findVertex" to obtain the actual vertices.
-	// HINT: Use the next function to actually remove the edge.
-	return false;
+	Vertex<T> * sourcVertex = findVertex(sourc);
+    Vertex<T> * destVertex = findVertex(dest);
+    if (sourcVertex == NULL || destVertex == NULL) return false;
+    return sourcVertex->removeEdgeTo(destVertex);
 }
 
 /*
@@ -147,8 +149,12 @@ bool Graph<T>::removeEdge(const T &sourc, const T &dest) {
  */
 template <class T>
 bool Vertex<T>::removeEdgeTo(Vertex<T> *d) {
-	// TODO (6 lines)
-	// HINT: use an iterator to scan the "adj" vector and then erase the edge.
+    for (auto it = adj.begin(); it != adj.end(); it++) {
+        if (it->dest->info == d->info) {
+            adj.erase(it);
+            return true;
+        }
+    }
 	return false;
 }
 
@@ -162,10 +168,18 @@ bool Vertex<T>::removeEdgeTo(Vertex<T> *d) {
  */
 template <class T>
 bool Graph<T>::removeVertex(const T &in) {
-	// TODO (10 lines)
-	// HINT: use an iterator to scan the "vertexSet" vector and then erase the vertex.
-	// HINT: take advantage of "removeEdgeTo" to remove incoming edges.
-	return false;
+    Vertex<T> * destVertex = findVertex(in);
+    bool removed = false;
+    for (auto it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        if ((*it)->info == in) {
+            vertexSet.erase(it);
+            it--;
+            removed = true;
+        } else {
+            (*it)->removeEdgeTo(destVertex);
+        }
+    }
+	return removed;
 }
 
 
