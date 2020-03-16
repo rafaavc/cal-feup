@@ -136,7 +136,7 @@ TEST(CAL_FP04, test_removeEdge_Again) {
 }
 
 TEST(CAL_FP04, test_maxNewChildren) {
-    /*Graph<Person> net1;
+    Graph<Person> net1;
     Person p1("Ana",19);
     Person p2("Carlos",33);
     Person p3("Filipe", 20);
@@ -158,7 +158,7 @@ TEST(CAL_FP04, test_maxNewChildren) {
     net1.addEdge(p3,p2,0);
     Person pt;
     EXPECT_EQ(3, net1.maxNewChildren(Person("Ana",19), pt));
-    EXPECT_EQ("Filipe", pt.getName());*/
+    EXPECT_EQ("Filipe", pt.getName());
 }
 
 TEST(CAL_FP04, test_isDAG) {
