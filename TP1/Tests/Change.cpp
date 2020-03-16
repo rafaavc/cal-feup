@@ -6,11 +6,11 @@
 #include <iostream>
 #include <string>
 
-string calcChange(int m, int numCoins, int *coinValues)
+string calcChange(int m, int numCoins, const int *coinValues)
 {
     if (m == 0) return "";
 
-    string res = "";
+    string res;
 
     unsigned minCoins[m+1];
     unsigned lastCoin[m+1];
@@ -19,8 +19,6 @@ string calcChange(int m, int numCoins, int *coinValues)
         minCoins[i] = UINT32_MAX;
         lastCoin[i] = UINT32_MAX;
     }
-
-    unsigned k_value;
 
     for (unsigned i = 1; i <= numCoins; i++) {  // i is the number of different coins we can use
         for (unsigned k = coinValues[i-1]; k <= m; k++) {     // k is the capacity of the backpack
