@@ -44,7 +44,7 @@ template <class T>
 class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
 
-	void dfsVisit(Vertex<T> *v,  vector<T> & res) const;
+	void dfsVisit(Vertex<T> *v,  vector<T> & res, map<Vertex<T>*, bool> &visited) const;
 	Vertex<T> *findVertex(const T &in) const;
 	bool dfsIsDAG(Vertex<T> *v) const;
 public:
@@ -172,6 +172,7 @@ bool Graph<T>::removeVertex(const T &in) {
     bool removed = false;
     for (auto it = vertexSet.begin(); it != vertexSet.end(); it++) {
         if ((*it)->info == in) {
+            delete *it;
             vertexSet.erase(it);
             it--;
             removed = true;
@@ -192,8 +193,16 @@ bool Graph<T>::removeVertex(const T &in) {
  */
 template <class T>
 vector<T> Graph<T>::dfs() const {
-	// TODO (7 lines)
+	map<Vertex<T> *, bool> visited;
 	vector<T> res;
+	for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        visited.insert(pair<Vertex<T> *, bool>((*it), false));
+	}
+    for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        if (!visited.at(*it)) {
+            dfsVisit(*it, res, visited);
+        }
+    }
 	return res;
 }
 
@@ -202,8 +211,14 @@ vector<T> Graph<T>::dfs() const {
  * Updates a parameter with the list of visited node contents.
  */
 template <class T>
-void Graph<T>::dfsVisit(Vertex<T> *v, vector<T> & res) const {
-	// TODO (7 lines)
+void Graph<T>::dfsVisit(Vertex<T> *v, vector<T> & res, map<Vertex<T> *, bool> &visited) const {
+    visited.at(v) = true;
+    res.push_back(v->info);
+    for (Edge<T> a : v->adj) {
+        if (!visited.at(a.dest)) {
+            dfsVisit(a.dest, res, visited);
+        }
+    }
 }
 
 /****************** 2b) bfs ********************/
