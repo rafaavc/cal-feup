@@ -230,10 +230,29 @@ void Graph<T>::dfsVisit(Vertex<T> *v, vector<T> & res) const {
  */
 template <class T>
 vector<T> Graph<T>::bfs(const T & source) const {
-	// TODO (22 lines)
-	// HINT: Use the flag "visited" to mark newly discovered vertices .
-	// HINT: Use the "queue<>" class to temporarily store the vertices.
-	vector<T> res;
+    vector<T> res;
+    for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        (*it)->visited = false;
+    }
+    queue<Vertex<T> *> vertexQueue;
+
+    Vertex<T> * s = findVertex(source);
+    if (s == NULL) return vector<T>();
+
+    vertexQueue.push(s);
+    s->visited = true;
+
+    while(!vertexQueue.empty()) {
+        s = vertexQueue.front();
+        vertexQueue.pop();
+        res.push_back(s->info);
+        for (Edge<T> a : s->adj) {
+            if (!a.dest->visited) {
+                vertexQueue.push(a.dest);
+                a.dest->visited = true;
+            }
+        }
+    }
 	return res;
 }
 
