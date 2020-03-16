@@ -267,8 +267,8 @@ vector<T> Graph<T>::bfs(const T & source) const {
 
 template<class T>
 vector<T> Graph<T>::topsort() const {
-	// TODO (26 lines)
 	vector<T> res;
+
 	return res;
 }
 
@@ -297,11 +297,19 @@ int Graph<T>::maxNewChildren(const T & source, T &inf) const {
  * that is being processed in the the stack of recursive calls (see theoretical classes).
  * Returns true if the graph is acyclic, and false otherwise.
  */
-
 template <class T>
 bool Graph<T>::isDAG() const {
-	// TODO (9 lines, mostly reused)
-	// HINT: use the auxiliary field "processing" to mark the vertices in the stack.
+    for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        (*it)->processing = false;
+        (*it)->visited = false;
+    }
+    for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        if (!(*it)->visited) {
+            (*it)->processing = true;
+            if (!dfsIsDAG(*it)) return false;
+            (*it)->processing = false;
+        }
+    }
 	return true;
 }
 
@@ -311,7 +319,15 @@ bool Graph<T>::isDAG() const {
  */
 template <class T>
 bool Graph<T>::dfsIsDAG(Vertex<T> *v) const {
-	// TODO (12 lines, mostly reused)
+    v->visited = true;
+    for (Edge<T> a : v->adj) {
+        if (a.dest->processing) return false;
+        if (!a.dest->visited) {
+            a.dest->processing = true;
+            if (!dfsIsDAG(a.dest)) return false;
+            a.dest->processing = false;
+        }
+    }
 	return true;
 }
 
