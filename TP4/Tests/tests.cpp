@@ -189,7 +189,6 @@ TEST(CAL_FP04, test_isDAG) {
 }
 
 TEST(CAL_FP04, test_topsort) {
-    /* //uncomment test body below!
     Graph<int> myGraph;
     myGraph.addVertex(1); myGraph.addVertex(2); myGraph.addVertex(3); myGraph.addVertex(4);
     myGraph.addVertex(5); myGraph.addVertex(6); myGraph.addVertex(7);
@@ -222,6 +221,5 @@ TEST(CAL_FP04, test_topsort) {
     for( unsigned int i = 0; i < topOrder.size(); i++)
         ss << topOrder[i] << " ";
     EXPECT_EQ("", ss.str());
-     */
 }
 
