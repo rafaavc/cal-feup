@@ -9,6 +9,7 @@
 #include <list>
 #include <limits>
 #include <cmath>
+#include <stack>
 #include "MutablePriorityQueue.h"
 
 using namespace std;
@@ -173,7 +174,31 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
 
 template<class T>
 void Graph<T>::unweightedShortestPath(const T &orig) {
-	// TODO
+    for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        (*it)->dist = DBL_MAX;
+    }
+
+    Vertex<T> * s = findVertex(orig);
+    if (s == NULL) return;
+
+    s->dist = 0;
+
+    queue<Vertex<T> *> vertexQueue;
+
+    vertexQueue.push(s);
+
+    while(!vertexQueue.empty()) {
+        s = vertexQueue.front();
+        vertexQueue.pop();
+
+        for (Edge<T> a : s->adj) {
+            if (a.dest->getDist() == DBL_MAX) {
+                vertexQueue.push(a.dest);
+                a.dest->dist = s->getDist() + 1;
+                a.dest->path = s;
+            }
+        }
+    }
 }
 
 
@@ -191,8 +216,20 @@ void Graph<T>::bellmanFordShortestPath(const T &orig) {
 
 template<class T>
 vector<T> Graph<T>::getPathTo(const T &dest) const{
+	stack<T> stackRes;
+	Vertex<T> * v = findVertex(dest);
+
+	while(true) {
+	    stackRes.push(v->getInfo());
+	    if (v->getDist() == 0) break;
+	    v = v->getPath();
+	}
+
 	vector<T> res;
-	// TODO
+	while(!stackRes.empty()) {
+	    res.push_back(stackRes.top());
+        stackRes.pop();
+	}
 	return res;
 }
 
