@@ -176,6 +176,7 @@ template<class T>
 void Graph<T>::unweightedShortestPath(const T &orig) {
     for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
         (*it)->dist = DBL_MAX;
+        (*it)->path = NULL;
     }
 
     Vertex<T> * s = findVertex(orig);
@@ -204,7 +205,36 @@ void Graph<T>::unweightedShortestPath(const T &orig) {
 
 template<class T>
 void Graph<T>::dijkstraShortestPath(const T &origin) {
-	// TODO
+    for (typename vector<Vertex<T> *>::const_iterator it = vertexSet.begin(); it != vertexSet.end(); it++) {
+        (*it)->dist = DBL_MAX;
+        (*it)->path = NULL;
+    }
+
+    Vertex<T> * s = findVertex(origin);
+    if (s == NULL) return;
+
+    s->dist = 0;
+
+    MutablePriorityQueue<Vertex<T>> vertexQueue;
+
+    vertexQueue.insert((Vertex<T> *) s);
+
+    while(!vertexQueue.empty()) {
+        s = vertexQueue.extractMin();
+
+        for (Edge<T> a : s->adj) {
+            if (a.dest->getDist() > s->getDist() + a.weight) {
+                double oldDist = a.dest->getDist();
+                a.dest->dist = s->getDist() + a.weight;
+                a.dest->path = s;
+                if (oldDist == DBL_MAX) {
+                    vertexQueue.insert((Vertex<T> *) a.dest);
+                } else {
+                    vertexQueue.decreaseKey(a.dest);
+                }
+            }
+        }
+    }
 }
 
 
