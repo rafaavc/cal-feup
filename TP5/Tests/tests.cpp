@@ -118,7 +118,7 @@ TEST(CAL_FP05, test_dijkstra) {
 }
 
 
-TEST(CAL_FP05, test_performance_dijkstra) {
+/*TEST(CAL_FP05, test_performance_dijkstra) {
     for (int n = 10; n <= 100; n += 10) {
         Graph< pair<int,int> > g;
         cout << "Dijkstra generating grid " << n << " x " << n << " ..." << endl;
@@ -132,7 +132,7 @@ TEST(CAL_FP05, test_performance_dijkstra) {
         auto elapsed = chrono::duration_cast<chrono::microseconds>(finish - start).count();
         cout << "Dijkstra processing grid " << n << " x " << n << " average time (micro-seconds)=" << (elapsed / (n*n)) << endl;
     }
-}
+}*/
 
 /* OUTPUT:
 Dijkstra generating grid 10 x 10 ...
@@ -168,7 +168,6 @@ Dijkstra processing grid 100 x 100 average time (micro-seconds)=4743
 */
 
 
-/* //Uncomment the test below...
 TEST(CAL_FP05, test_bellmanFord) {
     Graph<int> myGraph = CreateTestGraph();
 
@@ -184,11 +183,9 @@ TEST(CAL_FP05, test_bellmanFord) {
     myGraph.bellmanFordShortestPath(7);
     checkSinglePath(myGraph.getPathTo(1), "7 6 4 3 1 ");
 }
-*/
 
 
-/* //Uncomment the test below...
-TEST(CAL_FP05, test_floydWarshall) {
+/*TEST(CAL_FP05, test_floydWarshall) {
     Graph<int> myGraph = CreateTestGraph();
     myGraph.floydWarshallShortestPath();
     checkSinglePath(myGraph.getfloydWarshallPath(1, 7), "1 2 4 5 7 ");

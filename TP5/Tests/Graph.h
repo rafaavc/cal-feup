@@ -240,7 +240,40 @@ void Graph<T>::dijkstraShortestPath(const T &origin) {
 
 template<class T>
 void Graph<T>::bellmanFordShortestPath(const T &orig) {
-	// TODO
+	Vertex<T> * v = findVertex(orig);
+	if (v == NULL) return;
+
+	for (Vertex<T> * vertex : vertexSet) {
+	    vertex->dist = DBL_MAX;
+	    vertex->path = NULL;
+	}
+
+	v->dist = 0;
+	queue<Vertex<T> *> vertexQueue;
+	vertexQueue.push(v);
+    while(!vertexQueue.empty()) {
+        Vertex<T> * vertex = vertexQueue.front();
+        vertexQueue.pop();
+        for (Edge<T> edge : vertex->adj) {
+            if (edge.dest->getDist() > vertex->getDist() + edge.weight) {
+                edge.dest->dist = vertex->getDist() + edge.weight;
+                edge.dest->path = vertex;
+                vertexQueue.push(edge.dest);
+            }
+        }
+	}
+
+    vertexQueue.push(v);
+    while(!vertexQueue.empty()) {
+        Vertex<T> * vertex = vertexQueue.front();
+        vertexQueue.pop();
+        for (Edge<T> edge : vertex->adj) {
+            if (edge.dest->getDist() > vertex->getDist() + edge.weight) {
+                cout << "ERROR: There are cycles of negative weight.\n" << endl;
+                return;
+            }
+        }
+    }
 }
 
 
@@ -269,13 +302,13 @@ vector<T> Graph<T>::getPathTo(const T &dest) const{
 
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {
-	// TODO
+
 }
 
 template<class T>
 vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 	vector<T> res;
-	// TODO
+
 	return res;
 }
 
