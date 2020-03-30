@@ -101,6 +101,9 @@ Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
 template <class T>
 class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
+	vector<vector<double>> weightMatrix;
+    vector<vector<double>> minDistMatrix;
+    vector<vector<int>> predecessorMatrix;
 
 public:
 	Vertex<T> *findVertex(const T &in) const;
@@ -110,13 +113,13 @@ public:
 	vector<Vertex<T> *> getVertexSet() const;
 
 	// Fp05 - single source
-	void unweightedShortestPath(const T &s);    //TODO...
-	void dijkstraShortestPath(const T &s);      //TODO...
-	void bellmanFordShortestPath(const T &s);   //TODO...
-	vector<T> getPathTo(const T &dest) const;   //TODO...
+	void unweightedShortestPath(const T &s);
+	void dijkstraShortestPath(const T &s);
+	void bellmanFordShortestPath(const T &s);
+	vector<T> getPathTo(const T &dest) const;
 
 	// Fp05 - all pairs
-	void floydWarshallShortestPath();   //TODO...
+	void floydWarshallShortestPath();
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;   //TODO...
 
 };
@@ -302,13 +305,121 @@ vector<T> Graph<T>::getPathTo(const T &dest) const{
 
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {
+    // Making the weight matrix
+    T max;
+    for (Vertex<T> * v : vertexSet) {
+        if (v->getInfo() > max) max = v->getInfo();
+    }
+    for (int i = 0; i <= max; i++) {
+        vector<double> inner;
+        for (int j = 0; j <= max; j++) {
+            inner.push_back(0);
+        }
+        weightMatrix.push_back(inner);
+    }
+
+    for (Vertex<T> * v : vertexSet) {
+        for (Edge<T> edge : v->adj) {
+            weightMatrix[v->getInfo()][edge.dest->getInfo()] = edge.weight;
+        }
+    }
+
+    // zero doesnt exist
+    for (int i = 1; i <= max; i++) {
+        for (int j = 1; j <= max; j++) {
+            if (weightMatrix[i][j] == 0 && i != j) {
+                weightMatrix[i][j] = DBL_MAX;
+            }
+        }
+    }
+
+    // initializing predecessorMatrix
+    for (int i = 0; i <= max; i++) {
+        vector<int> inner;
+        for (int j = 0; j <= max; j++) {
+            inner.push_back(0);
+        }
+        predecessorMatrix.push_back(inner);
+    }
+
+    // initializing minDistMatrix
+    for (int i = 0; i <= max; i++) {
+        vector<double> inner;
+        for (int j = 0; j <= max; j++) {
+            inner.push_back(weightMatrix[i][j]);
+        }
+        minDistMatrix.push_back(inner);
+    }
+    /*
+    for (int i = 1; i <= max; i++) {
+        cout << "[" << i << "]" << '\t';
+    }
+    cout << endl;
+    for (int i = 1; i <= max; i++) {
+        for (int j = 1; j <= max; j++) {
+            if (weightMatrix[i][j] == DBL_MAX) {
+                cout << "big" << '\t';
+            } else {
+                cout << weightMatrix[i][j] << '\t';
+            }
+        }
+        cout << "[" << i << "]" << endl;
+    }*/
+
+
+    vector<vector<double>> temp = minDistMatrix;
+
+    for (int k = 1; k <= max; k++) {
+        for (int i = 1; i <= max; i++) {
+            for (int j = 1; j <= max; j++) {
+                if (minDistMatrix[i][j] > minDistMatrix[i][k]+minDistMatrix[k][j]) {
+                    temp[i][j] = minDistMatrix[i][k]+minDistMatrix[k][j];
+                    predecessorMatrix[i][j] = k;
+                }
+            }
+        }
+
+        // copying the values from temp to minDistMatrix
+        minDistMatrix = temp;
+    }
+
+    for (int i = 1; i <= max; i++) {
+        cout << "[" << i << "]" << '\t';
+    }
+    cout << endl;
+    for (int i = 1; i <= max; i++) {
+        for (int j = 1; j <= max; j++) {
+            if (predecessorMatrix[i][j] == DBL_MAX) {
+                cout << "big" << '\t';
+            } else {
+                cout << predecessorMatrix[i][j] << '\t';
+            }
+        }
+        cout << "[" << i << "]" << endl;
+    }
 
 }
 
 template<class T>
 vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
-	vector<T> res;
+	stack<T> resStack;
 
+	resStack.push(dest);
+	T current = dest;
+	cout << "Starting!" << endl << current << " ";
+	while(predecessorMatrix[orig][current] != 0) {
+	    current = predecessorMatrix[orig][current];
+	    resStack.push(current);
+	    cout << current << " ";
+	}
+	resStack.push(orig);
+	cout << orig << endl << endl;
+
+    vector<T> res;
+    while(!resStack.empty()) {
+        res.push_back(resStack.top());
+        resStack.pop();
+    }
 	return res;
 }
 
