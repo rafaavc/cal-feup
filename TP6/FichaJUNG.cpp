@@ -88,11 +88,58 @@ void exercicio2()
 
 void exercicio3()
 {
-// TODO: Implement here exercise 3!
-// To read map files, use relative paths:
-// Vertices data: "../resources/mapa1/nos.txt"
-// Edges data: "../resources/mapa1/arestas.txt"
-// ...
+    ifstream nodes("../resources/mapa1/nos.txt");
+    ifstream edges("../resources/mapa1/arestas.txt");
+    string line;
+
+    GraphViewer * gv = new GraphViewer(600, 600, false);
+    gv->createWindow(600, 600);
+
+    while(getline(nodes, line)) {
+        stringstream l(line);
+        string tok;
+        int id, x, y;
+        int i = 0;
+        while(getline(l, tok, ';')) {
+            switch(i) {
+                case 0:
+                    id = stoi(tok);
+                    break;
+                case 1:
+                    x = stoi(tok);
+                    break;
+                case 2:
+                    y = stoi(tok);
+                    break;
+            }
+            i++;
+        }
+        gv->addNode(id, x, y);
+    }
+    while(getline(edges, line)) {
+        stringstream l(line);
+        string tok;
+        int id, x, y;
+        int i = 0;
+        while(getline(l, tok, ';')) {
+            switch(i) {
+                case 0:
+                    id = stoi(tok);
+                    break;
+                case 1:
+                    x = stoi(tok);
+                    break;
+                case 2:
+                    y = stoi(tok);
+                    break;
+            }
+            i++;
+        }
+        gv->addEdge(id, x, y, EdgeType::UNDIRECTED);
+    }
+    edges.close();
+    nodes.close();
+    gv->rearrange();
 }
 
 int main() {
@@ -104,13 +151,13 @@ int main() {
     /*
       * Uncomment the line below to run Exercise 2
       */
-    exercicio2();
+    //exercicio2();
 
     /*
       * Uncomment the line below to run Exercise 3
       */
 	//
-	//exercicio3();
+	exercicio3();
 
 	getchar();
 	return 0;
