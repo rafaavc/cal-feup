@@ -12,9 +12,8 @@ using namespace std;
 
 void exercicio1()
 {
-    cout << "hello" << endl;
-    GraphViewer * gv = new GraphViewer(600, 600, false);
-    cout << "hello2" << endl;
+    GraphViewer * gv = new GraphViewer(600, 600, true);
+    gv->createWindow(600, 600);
 
     gv->defineVertexColor("blue");
     gv->defineEdgeColor("black");
@@ -36,13 +35,11 @@ void exercicio1()
 
     gv->setEdgeColor(1, "yellow");
     gv->rearrange();
-    gv->createWindow(600, 600);
 }
 
 void exercicio2()
 {
-// TODO: Implement here exercise 2!
-// ...
+
 }
 
 void exercicio3()
