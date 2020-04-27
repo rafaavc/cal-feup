@@ -44,8 +44,6 @@ TEST(CAL_FP08, testFordFulkerson) {
 	cout << ss.str() << endl << endl;
 
 	EXPECT_EQ("1-> (2[Flow: 3] 3[Flow: 2] ) || 2-> (5[Flow: 1] 4[Flow: 2] 3[Flow: 0] ) || 3-> (5[Flow: 2] ) || 4-> (6[Flow: 2] ) || 5-> (6[Flow: 3] ) || 6-> () || ", ss.str());
-
-
 }
 
 

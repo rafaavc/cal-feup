@@ -109,7 +109,10 @@ public:
 	Vertex<T> *addVertex(const T &in);
 	Edge<T> *addEdge(const T &sourc, const T &dest, double c, double f=0);
 	void fordFulkerson(T source, T target);
-
+    bool findAugmentationPath(Vertex<T> * s, Vertex<T> * t);
+    void testAndVisit(queue<Vertex<T>*> &q, Edge<T> * e, Vertex<T> * v, double residual);
+    double findMinResidualAlongPath(Vertex<T> * s, Vertex<T> * t);
+    void augmentFlowAlongPath(Vertex<T> * s, Vertex<T> * t, double f);
 };
 
 template <class T>
@@ -156,7 +159,87 @@ vector<Vertex<T> *> Graph<T>::getVertexSet() const {
  */
 template <class T>
 void Graph<T>::fordFulkerson(T source, T target) {
-    // TODO
+    for (Vertex<T>* v: vertexSet) {
+        for (Edge<T> * e: v->getAdj()) {
+            e->flow = 0;
+        }
+    }
+    Vertex<T> * sourceVx = findVertex(source);
+    Vertex<T> * targetVx = findVertex(target);
+
+    double f;
+
+    while (findAugmentationPath(sourceVx, targetVx)) {
+        f = findMinResidualAlongPath(sourceVx, targetVx);
+        augmentFlowAlongPath(sourceVx, targetVx, f);
+    }
+}
+
+template<class T>
+void Graph<T>::augmentFlowAlongPath(Vertex<T> * s, Vertex<T> * t, double f) {
+    Vertex<T> *v = t;
+    while(v != s) {
+        Edge<T> * e = v->path;
+        if (e->dest == v) {
+            e->flow = e->flow + f;
+            v = e->orig;
+        } else {
+            e->flow = e->flow - f;
+            v = e->dest;
+        }
+    }
+}
+
+template<class T>
+double Graph<T>::findMinResidualAlongPath(Vertex<T> * s, Vertex<T> * t) {
+    double f = INF;
+    Vertex<T> * v = t;
+
+    while (v != s) {
+        Edge<T> * e = v->path;
+        if (e->dest == v) {
+            f = min(f, e->capacity - e->flow);
+            v = e->orig;
+        } else {
+            f = min(f, e->flow);
+            v = e->dest;
+        }
+    }
+    return f;
+}
+
+template<class T>
+bool Graph<T>::findAugmentationPath(Vertex<T> * s, Vertex<T> * t) {
+    for (Vertex<T> * v : vertexSet) {
+        v->visited = false;
+    }
+    s->visited = true;
+
+    queue<Vertex<T>*> q;
+    q.push(s);
+
+    while(!q.empty() && !t->visited) {
+        Vertex<T> * v = q.front();
+        q.pop();
+
+        for (Edge<T> * e: v->outgoing) {
+            testAndVisit(q, e, e->dest, e->capacity - e->flow);
+        }
+
+        for (Edge<T> * e: v->incoming) {
+            testAndVisit(q, e, e->orig, e->flow);
+        }
+    }
+    return t->visited;
+}
+
+template<class T>
+void Graph<T>::testAndVisit(queue<Vertex<T>*> &q, Edge<T> * e, Vertex<T> * v, double residual) {
+    if (!v->visited && residual > 0) {
+        v->visited = true;
+        v->path = e;
+        q.push(v);
+    }
 }
 
 
