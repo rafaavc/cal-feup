@@ -140,6 +140,8 @@ public:
     bool addBidirectionalEdge(const T &sourc, const T &dest, double w);
 	vector<Vertex<T>*> calculatePrim();
 	vector<Vertex<T>*> calculateKruskal();
+
+    void removeRedundantEdges(Vertex<T> *orig, Edge<T> edge);
 };
 
 
@@ -366,15 +368,53 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 /**************** Minimum Spanning Tree  ***************/
 template <class T>
 bool Graph<T>::addBidirectionalEdge(const T &sourc, const T &dest, double w) {
-    // TODO
-    return false;
+    Vertex<T> *v = findVertex(sourc);
+    if (v == nullptr) return false;
+    Vertex<T> *v1 = findVertex(dest);
+    if (v1 == nullptr) return false;
+
+    v->adj.push_back(Edge<T>(v, v1, w));
+    v1->adj.push_back(Edge<T>(v1, v, w));
+    return true;
 }
 
-
+template<class T>
+void Graph<T>::removeRedundantEdges(Vertex<T> * orig, Edge<T> edge) {
+    for (Vertex<T> * v : vertexSet) {
+        if (v != orig) {
+            for (auto e = v->adj.begin(); e != v->adj.end(); e++) {
+                if (e->dest == edge.dest) {
+                    v->adj.erase(e);
+                    break;
+                }
+            }
+        }
+    }
+}
 
 template <class T>
 vector<Vertex<T>* > Graph<T>::calculatePrim() {
-	// TODO
+	auto startVx = vertexSet.front();
+
+	dijkstraShortestPath(startVx->info);
+
+    MutablePriorityQueue<Vertex<T>> q;
+    startVx->visited = true;
+    q.insert(startVx);
+
+    while (!q.empty()) {
+        Vertex<T> * v = q.extractMin();
+        vector<Vertex<T> *> dests;
+
+        for (auto e : v->adj) {
+            if ((e.weight + v->dist == e.dest->dist) && !(e.dest->visited)) {
+                e.dest->visited = true;
+                removeRedundantEdges(v, e);
+                q.insert(e.dest);
+            }
+        }
+    }
+
 	return vertexSet;
 }
 
