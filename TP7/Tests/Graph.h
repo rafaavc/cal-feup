@@ -83,16 +83,16 @@ class Edge {
 	Vertex<T> *orig; 	// Fp07
 	Vertex<T> * dest;      // destination vertex
 	double weight;         // edge weight
-
 	bool selected; // Fp07
 
 public:
-	Edge(Vertex<T> *o, Vertex<T> *d, double w);
+    Edge(Vertex<T> *o, Vertex<T> *d, double w);
 	friend class Graph<T>;
 	friend class Vertex<T>;
 
 	// Fp07
 	double getWeight() const;
+	bool operator<(Edge<T> & edge) const;
 };
 
 template <class T>
@@ -101,6 +101,11 @@ Edge<T>::Edge(Vertex<T> *o, Vertex<T> *d, double w): orig(o), dest(d), weight(w)
 template <class T>
 double Edge<T>::getWeight() const {
 	return weight;
+}
+
+template <class T>
+bool Edge<T>::operator<(Edge<T> & edge) const {
+    return this->weight < edge.weight;
 }
 
 
@@ -141,7 +146,7 @@ public:
 	vector<Vertex<T>*> calculatePrim();
 	vector<Vertex<T>*> calculateKruskal();
 
-    void removeRedundantEdges(Vertex<T> *orig, Edge<T> edge);
+    void removeRedundantEdges(Edge<T> edge);
 };
 
 
@@ -379,7 +384,8 @@ bool Graph<T>::addBidirectionalEdge(const T &sourc, const T &dest, double w) {
 }
 
 template<class T>
-void Graph<T>::removeRedundantEdges(Vertex<T> * orig, Edge<T> edge) {
+void Graph<T>::removeRedundantEdges(Edge<T> edge) {
+    Vertex<T> * orig = edge.orig;
     for (Vertex<T> * v : vertexSet) {
         if (v != orig) {
             for (auto e = v->adj.begin(); e != v->adj.end(); e++) {
@@ -409,7 +415,7 @@ vector<Vertex<T>* > Graph<T>::calculatePrim() {
         for (auto e : v->adj) {
             if ((e.weight + v->dist == e.dest->dist) && !(e.dest->visited)) {
                 e.dest->visited = true;
-                removeRedundantEdges(v, e);
+                removeRedundantEdges(e);
                 q.insert(e.dest);
             }
         }
@@ -418,11 +424,24 @@ vector<Vertex<T>* > Graph<T>::calculatePrim() {
 	return vertexSet;
 }
 
-
-
 template <class T>
 vector<Vertex<T>*> Graph<T>::calculateKruskal() {
-	// TODO
+	dijkstraShortestPath(vertexSet.front()->info);
+
+	for (int i = 0; i < vertexSet.size() -1; i++) {
+	    Edge<T> minEdge(nullptr, nullptr, INF);
+
+	    for (Vertex<T> *v: vertexSet) {
+	        for (Edge<T> e : v->adj) {
+	            if (e.weight < minEdge.weight) {
+	                minEdge = e;
+	            }
+	        }
+	    }
+
+	    removeRedundantEdges(minEdge);
+	}
+
 	return vertexSet;
 }
 
