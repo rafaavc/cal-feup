@@ -131,7 +131,7 @@ Como o alfabeto apenas tem 4 símbolos, pode ser representado com log2(4) bits =
 
 ## b
 
-<img src="5a.tif" width="200"/>
+<img src="5a.png" width="200"/>
 
 T = 000 G = 001 A = 01 C = 1
 
