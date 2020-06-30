@@ -135,7 +135,7 @@ Como o alfabeto apenas tem 4 símbolos, pode ser representado com log2(4) bits =
 
 T = 000 G = 001 A = 01 C = 1
 
-Custo total = 2*2*3 + 5*2 + 13 = 35 bits
+Custo total = 2\*2\*3 + 5\*2 + 13 = 35 bits
 
 
 # Exercício 6

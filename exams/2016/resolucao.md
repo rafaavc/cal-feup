@@ -185,20 +185,20 @@ O consumidor de D receberá no máximo 30 000 uv, enquanto que o C receberá no 
 
 abcdABCDE - 9 símbolos 
 
-Para codificar 9 símbolos diferentes são necessários 4 bits, sendo o custo total de codificação do texto = 39*4 = 156 bits.
+Para codificar 9 símbolos diferentes são necessários 4 bits, sendo o custo total de codificação do texto = 39\*4 = 156 bits.
 
 ## b
 
 <img src="5b.png" width="300"/>
 
-custo mínimo total de codificação = 8 + 7*2 + 5*3 + 5*4 + 5*5 + 3*6 + 2*7 + 4*8 = 146 bits
+custo mínimo total de codificação = 8 + 7\*2 + 5\*3 + 5\*4 + 5\*5 + 3\*6 + 2\*7 + 4\*8 = 146 bits
 
 ## c
 
 Apesar da diferença não ser muita, com códigos de tamanho variável obtém-se menor custo total de codificação do texto do que com código de tamanho fixo.
 
 Utilizando RLE, a string ficaria:
-*a5*b3*C2*d5*E5*D2d*A3abc*d2ba*B2*c4, o que pode ocupar variados tamanhos, dependento do tamanho dos numeros e do tamanho de codificação dos asteriscos e simbolos. Mas geralmente, como existem bastantes letras repetidas juntas, RLE terá menor custo.
+\*a5\*b3\*C2\*d5\*E5\*D2d\*A3abc\*d2ba\*B2\*c4, o que pode ocupar variados tamanhos, dependento do tamanho dos numeros e do tamanho de codificação dos asteriscos e simbolos. Mas geralmente, como existem bastantes letras repetidas juntas, RLE terá menor custo.
 
 
 
