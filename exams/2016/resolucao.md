@@ -57,6 +57,8 @@ for (i = 0; i < n; i++) {
 return valorTotal[n-1]
 ```
 
+Complexidade temporal é ~ O(n^2).
+
 # Exercício 2
 
 ## a
@@ -78,17 +80,71 @@ Caminho mais curto de A a G: A -> C -> D -> F -> G
 
 ## b
 
+```c++
+algorithm(G, s) {
+    for each v in V do
+        dist(v) = DBL_MAX
+        path(v) = NULL
+        gas(v) = 0
+        custo(v) = DBL_MAX
+    
+    custo(s) = s.preco * 10;
+    gas(s) = 10;
+    dist(s) = 0;
+    Q = empty // min priority queue
+    Q.insert(s)
+    while(!Q.empty()) {
+        v = Q.extractMin() // extracts the one with the least cost
+        for each w in Adj(v) do
+            if (gas(v) < weight(v, w) && custo(w) > custo(v) + v.preco * 10) {
+                custo(w) = custo(v) + v.preco * 10
+                gas(w) = gas(v) + 10 - weight(v, w)
+                dist(w) = dist(v) + weight(v, w)
+                path(w) = v
+            } else if (gas(v) > weight(v, w) && custo(w) > custo(v)) {
+                custo(w) = custo(v)
+                gas(w) = gas(v) - weight(v, w)
+                dist(w) = dist(v) + weight(v, w)
+                path(w) = v
+            } else if (gas(v) >= weight(v, w) && gas(v) - weight(v, w) >= gas(w) &&  custo(w) == custo(v) && dist(w) > dist(v) + weight(v, w))) {
+                dist(w) = dist(v) + weight(v, w)
+                path(w) = v
+            }
+    }
+}
+```
+|        |  A | B(2) |  C | D(2) |  E |  F  |  G  |   -   |
+|:------:|:--:|:----:|:--:|:----:|:--:|:---:|:---:|:-----:|
+| proc A | 10 |  inf | 10 |  inf | 10 | inf | inf | custo |
+|        | 10 |   0  |  2 |   0  |  3 |  0  |  0  |  gas  |
+| proc C | 10 |  20  | 10 |  10  | 10 | inf | inf |       |
+|        | 10 |   8  |  2 |   1  |  3 |  0  |  0  |       |
+| proc D | 10 |  20  | 10 |  10  | 10 |  30 |  30 |       |
+|        | 10 |   8  |  2 |   1  |  3 |  7  |  2  |       |
+| proc E | 10 |  20  | 10 |  10  | 10 |  20 |  30 |       |
+|        | 10 |   8  |  2 |   1  |  3 |  3  |  2  |       |
+| proc B | 10 |  20  | 10 |  10  | 10 |  20 |  30 |       |
+|        | 10 |   8  |  2 |   1  |  3 |  3  |  2  |       |
+| proc F | 10 |  20  | 10 |  10  | 10 |  20 |  20 |       |
+|        | 10 |   8  |  2 |   1  |  3 |  3  |  0  |       |
+| proc G | 10 |  20  | 10 |  10  | 10 |  20 |  20 |       |
+|        | 10 |   8  |  2 |   1  |  3 |  3  |  0  |       |
+
+O caminho com menor custo será A -> C -> D -> F ->G
 
 ## c
 
+Sim, A -> C -> D -> G -> C -> B -> D -> B -> A -> E -> F -> E -> D -> F -> G
 
 # Exercício 3
 
 ## a
 
-
+<img src="3a.png" width="300"/>
+ 
 ## b
 
+?
 
 # Exercício 4
 
