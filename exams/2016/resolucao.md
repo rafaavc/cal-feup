@@ -201,7 +201,6 @@ Utilizando RLE, a string ficaria:
 \*a5\*b3\*C2\*d5\*E5\*D2d\*A3abc\*d2ba\*B2\*c4, o que pode ocupar variados tamanhos, dependento do tamanho dos numeros e do tamanho de codificação dos asteriscos e simbolos. Mas geralmente, como existem bastantes letras repetidas juntas, RLE terá menor custo.
 
 
-
 # Exercício 6
 
 ## a
@@ -215,6 +214,4 @@ Existe um numero n (natural) tal que o número de solicitações a atender num m
 - o problema é NP-completo, pois o problema da Soma dos Subconjuntos é redutível ao mesmo em tempo polinomial:
     - o inteiro (k) corresponde à bandwidth.
     - pretende-se encontrar um subconjunto, composto por elementos (os pedidos) tal que a soma do tamanho do ficheiro solicitado seja k.
-
-
 
