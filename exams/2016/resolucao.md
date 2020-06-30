@@ -140,35 +140,81 @@ Sim, A -> C -> D -> G -> C -> B -> D -> B -> A -> E -> F -> E -> D -> F -> G
 
 ## a
 
-<img src="3a.png" width="300"/>
+<img src="3a.png" width="400"/>
  
 ## b
 
-?
+https://www.quora.com/How-do-I-find-the-second-best-minimum-spanning-tree/answer/Alvaro-Pereira
+
+```
+Build first MST
+L = list of edges in the first mst, sorted by weight
+second_best_cost = INF
+for (i=0; i<L.size; i++) {
+try to build a mst without using edge L[i]
+if it's possible and its cost is < second_best_cost {
+second_mst = the new found mst
+second_best_cost = its cost
+}
+}
+
+Since the first MST has at most V-1 edges and you'll create a mst (O(E)) again at each step, this runs in O(V*E).
+
+Notice that:
+1) there may not be a second MST (in case the graph it's already its MST)
+2) the 2nd mst may have the same cost of the 1st (in case you can remove an edge, but use another one with the same cost that wasn't being used before).
+```
 
 # Exercício 4
 
 ## a
 
+Não. O fluxo máximo que esta rede pode suportar é 10000 uv, pois apesar de chegarem 50 000 uv ao vértice F, deste apenas podem sair 10 000 uv, sendo este o componente limitante do fluxo.
+
 ## b
 
-## c
+O volume máximo manter-se-á igual, pois o componente limitante mantém-se igual.
 
+## c
+o fluxo máximo será 30 000, sendo o componente limitante o canal GD.
+O consumidor de D receberá no máximo 30 000 uv, enquanto que o C receberá no máximo 15 000 uv, ambos dependendo da forma como o fluxo é distribuído na rede.
 
 # Exercício 5
 
 ## a
 
+abcdABCDE - 9 símbolos 
+
+Para codificar 9 símbolos diferentes são necessários 4 bits, sendo o custo total de codificação do texto = 39*4 = 156 bits.
+
 ## b
 
+<img src="5b.png" width="300"/>
+
+custo mínimo total de codificação = 8 + 7*2 + 5*3 + 5*4 + 5*5 + 3*6 + 2*7 + 4*8 = 146 bits
+
 ## c
+
+Apesar da diferença não ser muita, com códigos de tamanho variável obtém-se menor custo total de codificação do texto do que com código de tamanho fixo.
+
+Utilizando RLE, a string ficaria:
+*a5*b3*C2*d5*E5*D2d*A3abc*d2ba*B2*c4, o que pode ocupar variados tamanhos, dependento do tamanho dos numeros e do tamanho de codificação dos asteriscos e simbolos. Mas geralmente, como existem bastantes letras repetidas juntas, RLE terá menor custo.
+
 
 
 # Exercício 6
 
 ## a
 
+Existe um numero n (natural) tal que o número de solicitações a atender num minuto >= n?
+
 ## b
+
+- o problema é verificável em tempo polinomial (é possível verificar se o número de pedidios por minuto é superior ou igual a k em tempo polinomial), logo é NP.
+
+- o problema é NP-completo, pois o problema da Soma dos Subconjuntos é redutível ao mesmo em tempo polinomial:
+    - o inteiro (k) corresponde à bandwidth.
+    - pretende-se encontrar um subconjunto, composto por elementos (os pedidos) tal que a soma do tamanho do ficheiro solicitado seja k.
 
 
 
